@@ -1,0 +1,11 @@
+CREATE TABLE "User" (
+    Userid SERIAL PRIMARY KEY,
+    UserName VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE "Book" (
+    Bookid SERIAL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Author VARCHAR(255) NOT NULL,
+    Userid INTEGER REFERENCES "User"(Userid)
+);
