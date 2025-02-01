@@ -2,9 +2,9 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
-    private static final String URL = "jdbc:postgresql://localhost:5432/library"; // Correct format
-    private static final String USER = "postgres"; // Change to your PostgreSQL username
-    private static final String PASSWORD = "Markelg06"; // Change to your PostgreSQL password
+    private static final String URL = "jdbc:postgresql://localhost:5432/library";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "Markelg06";
 
     public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
@@ -26,7 +26,7 @@ public class Main {
 
                     if (scanner.hasNextInt()) {
                         int choice = scanner.nextInt();
-                        scanner.nextLine(); // consume the leftover newline
+                        scanner.nextLine();
 
                         switch (choice) {
                             case 1:
@@ -54,7 +54,7 @@ public class Main {
                         }
                     } else {
                         System.out.println("Invalid input. Please enter a number between 1 and 6.");
-                        scanner.next(); // consume the invalid input
+                        scanner.next();
                     }
                 } catch (SQLException e) {
                     System.out.println("SQL Error: " + e.getMessage());
@@ -65,7 +65,7 @@ public class Main {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.exit(1); // In case of a critical error, exit the program
+            System.exit(1);
         }
     }
 
@@ -78,8 +78,6 @@ public class Main {
             System.out.println("User '" + userName + "' already exists. Please choose a different name.");
             return;
         }
-
-        // Insert new user into the User table (Userid is auto-incremented)
         String query = "INSERT INTO \"User\" (UserName) VALUES (?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, userName);
@@ -93,7 +91,7 @@ public class Main {
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, userName);
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();  // If there's a result, the user exists
+                return rs.next();
             }
         }
     }
@@ -102,13 +100,13 @@ public class Main {
         System.out.print("Enter User Name: ");
         String userName = scanner.nextLine();
 
-        // Check if the user exists
+
         if (!userExists(conn, userName)) {
             System.out.println("User not found. Please add the user first.");
             return;
         }
 
-        // Get the user ID for the given username
+
         int userId = getUserId(conn, userName);
 
         System.out.print("Enter Book Title: ");
@@ -117,7 +115,7 @@ public class Main {
         System.out.print("Enter Book Author: ");
         String author = scanner.nextLine();
 
-        // Insert new book into the Book table (Bookid is auto-incremented)
+
         try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO \"Book\" (Title, Author, Userid) VALUES (?, ?, ?)")) {
             stmt.setString(1, title);
             stmt.setString(2, author);
@@ -137,7 +135,7 @@ public class Main {
                 }
             }
         }
-        return -1;  // Return -1 if user doesn't exist (should not happen due to earlier check)
+        return -1;
     }
 
     private static void viewBooks(Connection conn) throws SQLException {
@@ -188,7 +186,7 @@ public class Main {
             return;
         }
 
-        // Delete books associated with that user
+
         try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM \"Book\" WHERE Userid = ?")) {
             stmt.setInt(1, userId);
             int rowsAffected = stmt.executeUpdate();
