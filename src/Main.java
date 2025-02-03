@@ -12,7 +12,7 @@ public class Main {
 
             System.out.println("Connected to database!");
 
-            // Start menu
+
             menuHandler menuHandler = new menuHandler(conn, scanner);
             menuHandler.startMenu();
 
@@ -22,7 +22,7 @@ public class Main {
         }
     }
 
-    // Keep all database functions public so MenuHandler can access them
+
     public static void addUser(Connection conn, Scanner scanner) throws SQLException {
         System.out.print("Enter new User Name: ");
         String userName = scanner.nextLine();
